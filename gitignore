@@ -1,0 +1,12 @@
+# nunca versionar segredos
+secrets.h
+*.key
+.env
+.env.*
+
+# lixo comum
+node_modules/
+dist/
+.vercel/
+.DS_Store
+Thumbs.db
