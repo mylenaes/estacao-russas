@@ -181,9 +181,11 @@ function alertaCalor(hiC) {
   return "Perigo extremo";
 }
 
-// Maxima e minima de hoje (desde 00:00 local), a partir das medias de 1 min
+// Maxima e minima de hoje (desde 00:00 local), a partir das medias de 1 min.
+// "Hoje" e a data de agora, e nao a da ultima leitura: se a estacao nao enviou
+// nada hoje, mostra "--" em vez da minima e da maxima de ontem.
 function maxMinDoDia(feeds) {
-  const hoje = diaLocal(feeds.at(-1).created_at);
+  const hoje = diaLocal(new Date().toISOString());
   const temps = feeds
     .filter((f) => diaLocal(f.created_at) === hoje)
     .map((f) => num(f.field1))
