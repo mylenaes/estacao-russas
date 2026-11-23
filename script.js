@@ -579,6 +579,22 @@ const linhaVertical = {
   },
 };
 
+// Balao com o valor (tooltip) some sozinho depois de um tempo sem toque/movimento
+const TEMPO_BALAO_MS = 3000;
+
+const balaoTemporario = {
+  id: "balaoTemporario",
+  afterEvent(chart) {
+    clearTimeout(chart.$timerBalao); // novo toque ou movimento: recomeca a contagem
+    if (!chart.tooltip || chart.tooltip.getActiveElements().length === 0) return;
+    chart.$timerBalao = setTimeout(() => {
+      chart.setActiveElements([]);
+      chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+      chart.update("none");
+    }, TEMPO_BALAO_MS);
+  },
+};
+
 // Trecho entre dois pontos mais distantes que 1,5 intervalo = estacao sem enviar
 function ehLacuna(ctx) {
   const passo = MEDIA_MIN * 60000;
@@ -658,7 +674,7 @@ function criarGrafico(id, datasets, eixo) {
         },
       },
     },
-    plugins: [linhaVertical],
+    plugins: [linhaVertical, balaoTemporario],
   });
 }
 
