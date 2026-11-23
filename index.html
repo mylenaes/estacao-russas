@@ -1,452 +1,171 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estação Meteorológica</title>
-<style>
-  :root {
-    --bg: #f4f6f8;
-    --card: #ffffff;
-    --texto: #1b2733;
-    --suave: #64748b;
-    --linha: #e2e8f0;
-    --azul: #2563eb;
-    --verde: #16a34a;
-    --amarelo: #d97706;
-    --laranja: #ea580c;
-    --vermelho: #dc2626;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --texto: #e2e8f0;
-      --suave: #94a3b8;
-      --linha: #334155;
-    }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--texto);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.4;
-  }
-  main { max-width: 1000px; margin: 0 auto; padding: 16px; }
-  header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 16px; }
-  h1 { font-size: 1.4rem; margin: 0; }
-  .status { font-size: 0.9rem; color: var(--suave); display: flex; align-items: center; gap: 6px; }
-  .ponto { width: 10px; height: 10px; border-radius: 50%; background: var(--suave); display: inline-block; }
-  .ponto.vivo { background: var(--verde); }
-  .ponto.velho { background: var(--vermelho); }
-  .card { background: var(--card); border: 1px solid var(--linha); border-radius: 14px; padding: 16px; }
-  .card h2 { font-size: 0.85rem; font-weight: 600; margin: 0 0 8px; color: var(--suave); text-transform: uppercase; letter-spacing: 0.04em; }
-  .grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 12px; }
-  .valor { font-size: 2.2rem; font-weight: 700; line-height: 1.1; }
-  .valor small { font-size: 1rem; font-weight: 500; color: var(--suave); margin-left: 4px; }
-  .sub { color: var(--suave); font-size: 0.9rem; margin-top: 4px; }
-
-  .previsao { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }
-  @media (max-width: 560px) { .previsao { grid-template-columns: 1fr; } }
-  .gauge { width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--cor, var(--suave)) calc(var(--pct, 0) * 1%), var(--linha) 0); }
-  .gauge > div { width: 118px; height: 118px; border-radius: 50%; background: var(--card); display: grid; place-items: center; text-align: center; }
-  .gauge .num { font-size: 2.2rem; font-weight: 700; line-height: 1; }
-  .gauge .faixa { font-size: 0.8rem; font-weight: 600; color: var(--cor, var(--suave)); }
-  .fatores { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 6px; }
-  .fatores li { font-size: 0.95rem; padding-left: 20px; position: relative; }
-  .fatores li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--linha); }
-  .fatores li.mais::before { background: var(--laranja); }
-  .fatores li.menos::before { background: var(--verde); }
-  .aviso { font-size: 0.8rem; color: var(--suave); margin-top: 10px; }
-
-  .vento-linha { display: flex; align-items: center; gap: 14px; }
-  .bussola { width: 84px; height: 84px; flex: none; }
-  .bussola text { fill: var(--suave); font-size: 11px; font-family: inherit; }
-  .bussola circle { fill: none; stroke: var(--linha); stroke-width: 2; }
-  .seta { fill: var(--azul); transform-origin: 50px 50px; transition: transform 0.6s; }
-
-  .graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 12px; margin-top: 12px; }
-  @media (max-width: 480px) { .graficos { grid-template-columns: 1fr; } }
-  .caixa-grafico { position: relative; height: 220px; }
-  .erro { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: none; }
-  .demo { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: none; font-size: 0.9rem; }
-  footer { margin: 20px 0 8px; font-size: 0.8rem; color: var(--suave); text-align: center; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estação Meteorológica de Russas</title>
+  <meta name="description" content="Dados em tempo real da estação meteorológica do campus da UFC em Russas (CE): temperatura, umidade, pressão, chuva e vento.">
+  <link rel="icon" href="./assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Zeyada&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://unpkg.com/weather-iconic@2.2.0/dist/weather-iconic.css" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Zeyada&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://unpkg.com/weather-iconic@2.2.0/dist/weather-iconic.css"></noscript>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<main>
 
-<header>
-  <h1 id="titulo">Estação Meteorológica</h1>
-  <div class="status"><span class="ponto" id="ponto"></span><span id="statusTexto">carregando...</span></div>
+<body class="conteudo">
+  <header class="navbar">
+    <div class="local">
+      <img src="./assets/location.svg" alt="" class="icone-local" width="18" height="18">
+      <p class="endereco">Russas, CE</p>
+    </div>
+    <p class="status-estacao">
+      <span id="status-bolinha" class="bolinha" aria-hidden="true"></span>
+      <span>Última atualização às <span id="hora">--:--</span><span id="status-aviso"></span></span>
+    </p>
 </header>
 
-<div class="demo" id="avisoDemo">Modo demonstração: os dados abaixo são fictícios. Preencha o CHANNEL_ID no começo do script para ver os dados reais da estação.</div>
-<div class="erro" id="erro"></div>
-
-<section class="card">
-  <h2>Índice de chuva</h2>
-  <div class="previsao">
-    <div class="gauge" id="gauge"><div><div><div class="num" id="idxNum">--</div><div class="faixa" id="idxFaixa">--</div></div></div></div>
-    <div>
-      <div id="idxResumo" style="font-size:1.05rem;font-weight:600;">Calculando...</div>
-      <ul class="fatores" id="fatores"></ul>
-    </div>
-  </div>
-  <div class="aviso">É uma estimativa feita só com os sensores desta estação (pressão, umidade, temperatura e chuva recente). Não é uma previsão oficial nem uma probabilidade; ela deve ser ajustada com o tempo, comparando com a chuva que de fato caiu.</div>
-</section>
-
-<section class="grade">
-  <div class="card"><h2>Temperatura</h2><div class="valor" id="vTemp">--<small>°C</small></div><div class="sub" id="sTemp"></div></div>
-  <div class="card"><h2>Umidade</h2><div class="valor" id="vUmid">--<small>%</small></div><div class="sub" id="sUmid"></div></div>
-  <div class="card"><h2>Pressão</h2><div class="valor" id="vPress">--<small>hPa</small></div><div class="sub" id="sPress"></div></div>
-  <div class="card"><h2>Chuva hoje</h2><div class="valor" id="vChuva">--<small>mm</small></div><div class="sub" id="sChuva"></div></div>
-  <div class="card">
-    <h2>Vento</h2>
-    <div class="vento-linha">
-      <svg class="bussola" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="44"/>
-        <text x="50" y="14" text-anchor="middle">N</text>
-        <text x="90" y="54" text-anchor="middle">L</text>
-        <text x="50" y="96" text-anchor="middle">S</text>
-        <text x="10" y="54" text-anchor="middle">O</text>
-        <polygon class="seta" id="seta" points="50,22 58,56 50,50 42,56"/>
-      </svg>
-      <div>
-        <div class="valor" id="vVento">--<small>km/h</small></div>
-        <div class="sub" id="sVento"></div>
+  <main>
+    <div class="linha-topo">
+      <div class="card CardPrincipal">
+        <i id="icone" class="weather weather-na"></i>
+        <div class="temp-atual"><span id="temperatura">--</span>°C</div>
+        <div class="temp-sensacao">Sensação térmica <strong><span id="sensacao">--</span>°</strong></div>
+        <span id="alerta-calor" class="alerta-calor" hidden></span>
+        <div class="temp-extremos">
+          Mín <span id="temp-min">--</span>° · Máx <span id="temp-max">--</span>°
+        </div>
       </div>
+
+      <section id="card-indice" class="card card-indice">
+        <span class="card-titulo">Índice local de chuva</span>
+        <div class="indice-corpo">
+          <div class="indice-anel">
+            <svg viewBox="0 0 120 120">
+              <circle class="anel-fundo" cx="60" cy="60" r="52"/>
+              <circle id="indice-arco" class="anel-arco" cx="60" cy="60" r="52"/>
+            </svg>
+            <div class="anel-centro">
+              <span id="indice-valor">--</span>
+              <span id="indice-nivel"></span>
+            </div>
+          </div>
+
+          <div>
+            <p id="indice-frase" class="indice-frase">--</p>
+            <ul id="indice-motivos" class="indice-motivos"></ul>
+          </div>
+        </div>
+
+        <p class="indice-aviso">
+          Estimativa feita só com os sensores desta estação (pressão, umidade, temperatura e chuva recente).
+          Não é uma previsão oficial nem uma probabilidade.
+        </p>
+      </section>
     </div>
-  </div>
-</section>
+    <div class="linha-cards">
 
-<section class="graficos">
-  <div class="card"><h2>Temperatura e umidade (24 h)</h2><div class="caixa-grafico"><canvas id="gTemp"></canvas></div></div>
-  <div class="card"><h2>Pressão (24 h)</h2><div class="caixa-grafico"><canvas id="gPress"></canvas></div></div>
-  <div class="card"><h2>Vento (24 h)</h2><div class="caixa-grafico"><canvas id="gVento"></canvas></div></div>
-  <div class="card"><h2>Chuva acumulada no dia (24 h)</h2><div class="caixa-grafico"><canvas id="gChuva"></canvas></div></div>
-</section>
+      <section class="card card-medida">
+        <span class="card-titulo">Umidade</span>
+        <div class="card-valor"><span id="umidade">--</span><span class="unidade">%</span></div>
+        <p class="card-detalhe">ponto de orvalho <span id="orvalho">--</span> °C</p>
+      </section>
 
-<footer>Dados enviados pela estação ao ThingSpeak a cada minuto. A página atualiza sozinha.</footer>
+      <section class="card card-medida">
+        <span class="card-titulo">Pressão</span>
+        <div class="card-valor"><span id="pressao">--</span><span class="unidade">hPa</span></div>
+        <p class="card-detalhe" id="tendencia">--</p>
+      </section>
 
-</main>
+      <section class="card card-medida">
+        <span class="card-titulo">Chuva hoje</span>
+        <div class="card-valor"><span id="chuva">--</span><span class="unidade">mm</span></div>
+        <p class="card-detalhe" id="chuva-texto">--</p>
+      </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script>
-// =====================================================
-// CONFIGURACAO  (PREENCHA)
-// =====================================================
-const CONFIG = {
-  CHANNEL_ID: "3577116",        // numero do canal ThingSpeak (deixe vazio para ver a demonstracao)
-  READ_KEY: "",          // so se o canal for privado
-  CIDADE: "Russas, CE",
-  RESULTADOS: 1500,      // ~25 h de dados com 1 envio por minuto
-  ATUALIZAR_MS: 60000
-};
+      <section class="card card-medida">
+        <span class="card-titulo">Vento</span>
+        <div class="vento-corpo">
+          <svg class="rosa" viewBox="0 0 120 120" role="img" aria-label="Rosa dos ventos">
+            <circle class="rosa-aro" cx="60" cy="60" r="44"/>
+            <circle class="rosa-aro-int" cx="60" cy="60" r="30"/>
+            <g class="rosa-marcas">
+              <line x1="60" y1="16" x2="60" y2="22"/>       <line x1="104" y1="60" x2="98" y2="60"/>
+              <line x1="60" y1="104" x2="60" y2="98"/>      <line x1="16" y1="60" x2="22" y2="60"/>
+              <line x1="91.1" y1="28.9" x2="87.3" y2="32.7"/> <line x1="91.1" y1="91.1" x2="87.3" y2="87.3"/>
+              <line x1="28.9" y1="91.1" x2="32.7" y2="87.3"/> <line x1="28.9" y1="28.9" x2="32.7" y2="32.7"/>
+            </g>
+            <g class="rosa-rotulos" text-anchor="middle" dominant-baseline="central">
+              <text class="cardeal" x="60" y="8">N</text>
+              <text x="98" y="22">NE</text>
+              <text class="cardeal" x="113" y="60">L</text>
+              <text x="98" y="98">SE</text>
+              <text class="cardeal" x="60" y="112">S</text>
+              <text x="22" y="98">SO</text>
+              <text class="cardeal" x="7" y="60">O</text>
+              <text x="22" y="22">NO</text>
+            </g>
+            <g id="vento-seta" style="visibility: hidden">
+              <polygon class="rosa-seta" points="60,24 69,64 60,57 51,64"/>
+              <line class="rosa-cauda" x1="60" y1="60" x2="60" y2="90"/>
+            </g>
+            <circle class="rosa-centro" cx="60" cy="60" r="3"/>
+          </svg>
 
-// campos do canal
-const F = { temp: 1, umid: 2, press: 3, chuva: 4, vmed: 5, vraj: 6, dir: 7 };
+          <div>
+            <div class="card-valor"><span id="vento">--</span><span class="unidade">km/h</span></div>
+            <p class="card-detalhe">rajada <span id="rajada">--</span> km/h · <span id="direcao">--</span></p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="linha-graficos">
 
-// =====================================================
-// DADOS
-// =====================================================
-const num = v => (v === null || v === undefined || v === "" || isNaN(Number(v))) ? null : Number(v);
+      <section class="card card-grafico">
+        <span class="card-titulo">Temperatura e umidade · 24 h</span>
+        <p class="grafico-sub">Temperatura (°C)</p>
+        <div class="grafico-area grafico-meia"><canvas id="graf-temp"></canvas></div>
+        <p class="grafico-sub">Umidade relativa (%)</p>
+        <div class="grafico-area grafico-meia"><canvas id="graf-umidade"></canvas></div>
+      </section>
 
-async function buscarDados() {
-  if (!CONFIG.CHANNEL_ID) return { dados: dadosDemo(), demo: true };
+      <section class="card card-grafico">
+        <span class="card-titulo">Pressão ao nível do mar · 24 h</span>
+        <p class="grafico-sub">hPa</p>
+        <div class="grafico-area"><canvas id="graf-pressao"></canvas></div>
+      </section>
 
-  let url = "https://api.thingspeak.com/channels/" + CONFIG.CHANNEL_ID +
-            "/feeds.json?results=" + CONFIG.RESULTADOS;
-  if (CONFIG.READ_KEY) url += "&api_key=" + encodeURIComponent(CONFIG.READ_KEY);
+      <section class="card card-grafico">
+        <span class="card-titulo">Chuva acumulada · 24 h</span>
+        <p class="grafico-sub">Total: <strong><span id="chuva-24h">--</span> mm</strong></p>
+        <div class="grafico-area"><canvas id="graf-chuva"></canvas></div>
+      </section>
 
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error("ThingSpeak respondeu " + resp.status);
-  const json = await resp.json();
+      <section class="card card-grafico">
+        <span class="card-titulo">Vento e rajadas · 24 h</span>
+        <p class="grafico-sub grafico-legenda">
+          <span class="chave chave-azul"></span>Vento médio (10 min)
+          <span class="chave chave-laranja"></span>Rajada
+          <span class="grafico-unidade">km/h</span>
+        </p>
+        <div class="grafico-area"><canvas id="graf-vento"></canvas></div>
+      </section>
+    </div>
+  </main>
 
-  const dados = (json.feeds || []).map(f => ({
-    t: new Date(f.created_at),
-    temp: num(f["field" + F.temp]),
-    umid: num(f["field" + F.umid]),
-    press: num(f["field" + F.press]),
-    chuva: num(f["field" + F.chuva]),
-    vmed: num(f["field" + F.vmed]),
-    vraj: num(f["field" + F.vraj]),
-    dir: num(f["field" + F.dir])
-  }));
-  return { dados, demo: false };
-}
+  <footer class="rodape">
+    <div class="rodape-conteudo">
+      <div class="rodape-logos">
+        <img src="./assets/ufc_logo.png" alt="Universidade Federal do Ceará" width="242" height="64">
+        <img src="./assets/nicite.png" alt="Logo do projeto" width="48" height="64">
+      </div>
+      <p class="rodape-creditos"> Desenvolvido por <span>Mylena Nascimento</span>
+      </p>
+    </div>
+  </footer>
 
-function dadosDemo() {
-  const out = [];
-  const agora = Date.now();
-  let chuva = 0;
-  for (let i = 1440; i >= 0; i--) {
-    const t = new Date(agora - i * 60000);
-    const h = t.getHours() + t.getMinutes() / 60;
-    // pressao cai nas ultimas 3 h para mostrar o indice subindo
-    const queda = i < 180 ? (180 - i) / 180 * 2.4 : 0;
-    if (i < 25 && i > 10) chuva += 0.25;
-    out.push({
-      t,
-      temp: 28 + 4 * Math.sin((h - 9) / 24 * 2 * Math.PI) - (i < 30 ? 2 : 0),
-      umid: 70 - 15 * Math.sin((h - 9) / 24 * 2 * Math.PI) + (i < 180 ? 12 : 0),
-      press: 1012 + 1.2 * Math.sin((h - 4) / 12 * 2 * Math.PI) - queda,
-      chuva,
-      vmed: 8 + 5 * Math.abs(Math.sin(i / 40)),
-      vraj: 14 + 8 * Math.abs(Math.sin(i / 25)),
-      dir: [45, 45, 90, 90, 135][Math.floor(i / 120) % 5]
-    });
-  }
-  return out;
-}
-
-// =====================================================
-// CALCULOS
-// =====================================================
-function pontoOrvalho(t, ur) {
-  const a = 17.62, b = 243.12;
-  const g = Math.log(ur / 100) + (a * t) / (b + t);
-  return (b * g) / (a - g);
-}
-
-function ultimo(dados, campo) {
-  for (let i = dados.length - 1; i >= 0; i--) {
-    if (dados[i][campo] !== null) return dados[i];
-  }
-  return null;
-}
-
-// diferenca de pressao entre agora e ~3 h atras
-function tendencia3h(dados) {
-  const atual = ultimo(dados, "press");
-  if (!atual) return null;
-  const alvo = atual.t.getTime() - 3 * 3600 * 1000;
-  let melhor = null, menor = Infinity;
-  for (const d of dados) {
-    if (d.press === null) continue;
-    const dist = Math.abs(d.t.getTime() - alvo);
-    if (dist < menor) { menor = dist; melhor = d; }
-  }
-  if (!melhor || menor > 25 * 60 * 1000) return null;
-  return atual.press - melhor.press;
-}
-
-// subiu a chuva acumulada nos ultimos 10 min?
-function choveuRecente(dados) {
-  const fim = dados.length ? dados[dados.length - 1].t.getTime() : 0;
-  const janela = dados.filter(d => d.chuva !== null && fim - d.t.getTime() <= 10 * 60 * 1000);
-  if (janela.length < 2) return false;
-  for (let i = 1; i < janela.length; i++) {
-    if (janela[i].chuva > janela[i - 1].chuva) return true;
-  }
-  return false;
-}
-
-// mesmas regras do firmware (estacao_wifi.ino)
-function calcularIndice(dados) {
-  const t = ultimo(dados, "temp"), u = ultimo(dados, "umid");
-  if (!t || !u) return null;
-
-  const fatores = [];
-  let pontos = 0;
-
-  const tend = tendencia3h(dados);
-  if (tend === null) {
-    fatores.push({ tipo: "", txt: "Pressão: ainda sem 3 h de histórico para comparar." });
-  } else {
-    const txt = (tend > 0 ? "+" : "") + tend.toFixed(1) + " hPa em 3 h";
-    if (tend <= -3) { pontos += 35; fatores.push({ tipo: "mais", txt: "Pressão caindo forte (" + txt + ")." }); }
-    else if (tend <= -1.5) { pontos += 20; fatores.push({ tipo: "mais", txt: "Pressão caindo (" + txt + ")." }); }
-    else if (tend <= -0.8) { pontos += 10; fatores.push({ tipo: "mais", txt: "Pressão caindo um pouco (" + txt + ")." }); }
-    else if (tend >= 1.5) { pontos -= 10; fatores.push({ tipo: "menos", txt: "Pressão subindo (" + txt + ")." }); }
-    else fatores.push({ tipo: "", txt: "Pressão estável (" + txt + ")." });
-  }
-
-  const ur = u.umid;
-  if (ur >= 90) { pontos += 25; fatores.push({ tipo: "mais", txt: "Umidade muito alta (" + ur.toFixed(0) + "%)." }); }
-  else if (ur >= 80) { pontos += 15; fatores.push({ tipo: "mais", txt: "Umidade alta (" + ur.toFixed(0) + "%)." }); }
-  else if (ur >= 70) { pontos += 5; fatores.push({ tipo: "mais", txt: "Umidade moderada (" + ur.toFixed(0) + "%)." }); }
-  else fatores.push({ tipo: "menos", txt: "Umidade baixa (" + ur.toFixed(0) + "%)." });
-
-  const td = pontoOrvalho(t.temp, ur);
-  const dif = t.temp - td;
-  if (dif <= 2) { pontos += 20; fatores.push({ tipo: "mais", txt: "Temperatura a " + dif.toFixed(1) + " °C do ponto de orvalho: ar quase saturado." }); }
-  else if (dif <= 4) { pontos += 10; fatores.push({ tipo: "mais", txt: "Temperatura a " + dif.toFixed(1) + " °C do ponto de orvalho." }); }
-  else fatores.push({ tipo: "menos", txt: "Ar longe da saturação (" + dif.toFixed(1) + " °C do ponto de orvalho)." });
-
-  if (choveuRecente(dados)) { pontos += 20; fatores.push({ tipo: "mais", txt: "Choveu nos últimos 10 minutos." }); }
-
-  pontos = Math.max(0, Math.min(100, pontos));
-  return { pontos, fatores, tend };
-}
-
-function faixa(p) {
-  if (p < 25) return { nome: "BAIXA", cor: "var(--verde)", resumo: "Pouca chance de chuva agora." };
-  if (p < 50) return { nome: "MÉDIA", cor: "var(--amarelo)", resumo: "Chuva possível; vale ficar atento." };
-  if (p < 75) return { nome: "ALTA", cor: "var(--laranja)", resumo: "Boa chance de chuva nas próximas horas." };
-  return { nome: "MUITO ALTA", cor: "var(--vermelho)", resumo: "Chuva muito provável." };
-}
-
-const NOMES_DIR = ["N", "NE", "L", "SE", "S", "SO", "O", "NO"];
-function nomeDir(g) {
-  if (g === null) return "--";
-  return NOMES_DIR[Math.round(g / 45) % 8];
-}
-
-// =====================================================
-// TELA
-// =====================================================
-const el = id => document.getElementById(id);
-const fmt = (v, c = 1) => v === null ? "--" : v.toFixed(c);
-const hora = d => d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: "America/Fortaleza" });
-
-function setValor(id, v, unidade, casas) {
-  el(id).innerHTML = fmt(v, casas) + "<small>" + unidade + "</small>";
-}
-
-function atualizarTela(dados, demo) {
-  el("titulo").textContent = "Estação Meteorológica · " + CONFIG.CIDADE;
-  el("avisoDemo").style.display = demo ? "block" : "none";
-
-  if (!dados.length) {
-    el("statusTexto").textContent = "sem dados no canal";
-    el("ponto").className = "ponto velho";
-    return;
-  }
-
-  // status
-  const fim = dados[dados.length - 1].t;
-  const idadeMin = Math.round((Date.now() - fim.getTime()) / 60000);
-  el("ponto").className = "ponto " + (idadeMin <= 15 ? "vivo" : "velho");
-  el("statusTexto").textContent = idadeMin <= 15
-    ? "ao vivo · atualizado às " + hora(fim)
-    : "sem dados há " + idadeMin + " min (último às " + hora(fim) + ")";
-
-  // valores atuais
-  const t = ultimo(dados, "temp"), u = ultimo(dados, "umid"), p = ultimo(dados, "press");
-  const c = ultimo(dados, "chuva"), vm = ultimo(dados, "vmed"), vr = ultimo(dados, "vraj"), d = ultimo(dados, "dir");
-
-  setValor("vTemp", t && t.temp, "°C", 1);
-  const hoje = dados.filter(x => x.temp !== null && Date.now() - x.t.getTime() <= 24 * 3600 * 1000);
-  if (hoje.length) {
-    const ts = hoje.map(x => x.temp);
-    el("sTemp").textContent = "mín " + Math.min(...ts).toFixed(1) + " · máx " + Math.max(...ts).toFixed(1) + " (24 h)";
-  }
-
-  setValor("vUmid", u && u.umid, "%", 0);
-  if (t && u) {
-    el("sUmid").textContent = "ponto de orvalho " + pontoOrvalho(t.temp, u.umid).toFixed(1) + " °C";
-  }
-
-  setValor("vPress", p && p.press, "hPa", 1);
-  const tend = tendencia3h(dados);
-  el("sPress").textContent = tend === null ? "tendência: aguardando histórico"
-    : (tend > 0.3 ? "↑ subindo " : tend < -0.3 ? "↓ caindo " : "→ estável ") + (tend > 0 ? "+" : "") + tend.toFixed(1) + " hPa em 3 h";
-
-  setValor("vChuva", c && c.chuva, "mm", 2);
-  el("sChuva").textContent = choveuRecente(dados) ? "chovendo agora" : "sem chuva nos últimos 10 min";
-
-  setValor("vVento", vm && vm.vmed, "km/h", 1);
-  el("sVento").textContent = "rajada " + fmt(vr && vr.vraj, 1) + " km/h · de " + nomeDir(d && d.dir);
-  if (d && d.dir !== null) {
-    // a seta aponta para onde o vento vai (direcao + 180)
-    el("seta").style.transform = "rotate(" + ((d.dir + 180) % 360) + "deg)";
-  }
-
-  // indice
-  const r = calcularIndice(dados);
-  if (r) {
-    const f = faixa(r.pontos);
-    el("gauge").style.setProperty("--pct", r.pontos);
-    el("gauge").style.setProperty("--cor", f.cor);
-    el("idxNum").textContent = r.pontos;
-    el("idxFaixa").textContent = f.nome;
-    el("idxResumo").textContent = f.resumo;
-    el("fatores").innerHTML = r.fatores.map(x => '<li class="' + x.tipo + '">' + x.txt + "</li>").join("");
-  }
-
-  atualizarGraficos(dados);
-}
-
-// =====================================================
-// GRAFICOS
-// =====================================================
-const graficos = {};
-
-function criarGrafico(id, datasets, opcoesY) {
-  const ctx = el(id).getContext("2d");
-  graficos[id] = new Chart(ctx, {
-    type: "line",
-    data: { labels: [], datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      interaction: { mode: "index", intersect: false },
-      elements: { point: { radius: 0 }, line: { borderWidth: 2, tension: 0.25 } },
-      plugins: { legend: { display: datasets.length > 1, labels: { boxWidth: 12 } } },
-      scales: Object.assign({
-        x: { ticks: { maxTicksLimit: 8, maxRotation: 0 }, grid: { display: false } }
-      }, opcoesY)
-    }
-  });
-}
-
-function iniciarGraficos() {
-  criarGrafico("gTemp", [
-    { label: "Temperatura (°C)", data: [], borderColor: "#ea580c", yAxisID: "y" },
-    { label: "Umidade (%)", data: [], borderColor: "#2563eb", yAxisID: "y2" }
-  ], {
-    y: { position: "left" },
-    y2: { position: "right", grid: { drawOnChartArea: false } }
-  });
-  criarGrafico("gPress", [{ label: "Pressão (hPa)", data: [], borderColor: "#7c3aed" }], { y: {} });
-  criarGrafico("gVento", [
-    { label: "Média (km/h)", data: [], borderColor: "#0891b2" },
-    { label: "Rajada (km/h)", data: [], borderColor: "#dc2626" }
-  ], { y: { beginAtZero: true } });
-  criarGrafico("gChuva", [{ label: "Chuva do dia (mm)", data: [], borderColor: "#2563eb", stepped: true, fill: true, backgroundColor: "rgba(37,99,235,0.15)" }], { y: { beginAtZero: true } });
-}
-
-function atualizarGraficos(dados) {
-  const limite = Date.now() - 24 * 3600 * 1000;
-  const d = dados.filter(x => x.t.getTime() >= limite);
-  const labels = d.map(x => hora(x.t));
-
-  const aplicar = (id, series) => {
-    const g = graficos[id];
-    g.data.labels = labels;
-    series.forEach((s, i) => { g.data.datasets[i].data = s; });
-    g.update();
-  };
-
-  aplicar("gTemp", [d.map(x => x.temp), d.map(x => x.umid)]);
-  aplicar("gPress", [d.map(x => x.press)]);
-  aplicar("gVento", [d.map(x => x.vmed), d.map(x => x.vraj)]);
-  aplicar("gChuva", [d.map(x => x.chuva)]);
-}
-
-// =====================================================
-// CICLO
-// =====================================================
-async function ciclo() {
-  try {
-    const { dados, demo } = await buscarDados();
-    el("erro").style.display = "none";
-    atualizarTela(dados, demo);
-  } catch (e) {
-    el("erro").style.display = "block";
-    el("erro").textContent = "Não consegui carregar os dados: " + e.message;
-    el("ponto").className = "ponto velho";
-    el("statusTexto").textContent = "erro de conexão";
-  }
-}
-
-iniciarGraficos();
-ciclo();
-setInterval(ciclo, CONFIG.ATUALIZAR_MS);
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
