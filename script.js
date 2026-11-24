@@ -7,8 +7,9 @@
 // field4 = chuva do dia (mm, desde 00:00)   field8 = indice de chuva (0-100, regra local)
 // ====================================================================
 
-// Altitude do sensor de pressao, em metros. MEDIR no local (Google Earth + altura da caixa).
-const ALTITUDE_M = 0;
+// Altitude do sensor de pressao acima do nivel do mar, em metros:
+// terreno 22,61 m (Google Earth) + sensor a 1,15 m do solo (0,95 m ate a plataforma + 0,20 m da plataforma)
+const ALTITUDE_M = 23.76;
 
 // days=1 traz as ultimas 24 h (~1440 entradas): serve para o "agora",
 // para a maxima/minima do dia e para o sinal de chuva.
